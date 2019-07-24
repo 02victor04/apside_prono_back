@@ -32,8 +32,8 @@ public class PlayerService {
 	}
 	
 	@Transactional
-	public Player updatePlayer(Player player ) {
-		Player bddPlayer = pRepo.findById(player.getId()).get();
+	public Player updatePlayer(Player player,Long id ) {
+		Player bddPlayer = pRepo.findById(id).get();
 		bddPlayer.setFirstName(player.getFirstName());
 		bddPlayer.setLastName(player.getLastName());
 		bddPlayer.setMail(player.getMail());
