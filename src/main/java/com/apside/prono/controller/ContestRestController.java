@@ -51,6 +51,7 @@ public class ContestRestController {
 	
 	@PostMapping(consumes = "application/json", produces="application/json", path="/api/contest")
 	public ResponseEntity<Contest> create(@RequestBody Contest contest, UriComponentsBuilder uriBuilder) {
+		cServ.createContest(contest);
 		URI location = uriBuilder.path("/api/contest/{id}").buildAndExpand(contest.getId()).toUri();
 		return ResponseEntity.created(location).body(contest);
 	}

@@ -52,6 +52,7 @@ public class EventRestController {
 	
 	@PostMapping(consumes = "application/json", produces="application/json", path="/api/event")
 	public ResponseEntity<Event> create(@RequestBody Event event, UriComponentsBuilder uriBuilder) {
+		eServ.createEvent(event);
 		URI location = uriBuilder.path("/api/event/{id}").buildAndExpand(event.getId()).toUri();
 		return ResponseEntity.created(location).body(event);
 	}

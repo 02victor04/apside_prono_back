@@ -47,6 +47,7 @@ public class PlayerRestController {
 	
 	@PostMapping(consumes = "application/json", produces="application/json", path="/api/player")
 	public ResponseEntity<Player> createPlayer(@RequestBody Player player, UriComponentsBuilder uriBuilder) {
+		pServ.createPlayer(player);
 		URI location = uriBuilder.path("/api/player/{id}").buildAndExpand(player.getId()).toUri();
 		return ResponseEntity.created(location).body(player);
 	}

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.apside.prono.model.Player;
 import com.apside.prono.repository.PlayerRepository;
 
+
+
 @Service
 public class PlayerService {
 
@@ -31,7 +33,12 @@ public class PlayerService {
 	
 	@Transactional
 	public Player updatePlayer(Player player ) {
-		return pRepo.save(player);
+		Player bddPlayer = pRepo.findById(player.getId()).get();
+		bddPlayer.setFirstName(player.getFirstName());
+		bddPlayer.setLastName(player.getLastName());
+		bddPlayer.setMail(player.getMail());
+		bddPlayer.setSubscriptionDate(player.getSubscriptionDate());
+		return pRepo.save(bddPlayer);
 	}
 	
 	@Transactional
