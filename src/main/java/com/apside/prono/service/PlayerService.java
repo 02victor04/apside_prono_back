@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.apside.prono.exception.InvalidPlayerDataException;
 import com.apside.prono.exception.PlayerUnknownException;
 import com.apside.prono.model.Player;
 import com.apside.prono.repository.PlayerRepository;
@@ -23,7 +24,12 @@ public class PlayerService {
 
 	@Transactional
 	public void createPlayer(Player player) {
-		pRepo.save(player);
+		if((player.getFirstName() == null)||(player.getLastName() == null)||(player.getMail()== null)) {
+			throw new InvalidPlayerDataException();
+		}else {
+			pRepo.save(player);
+		}
+		
 	}
 
 	public Player getPlayerById(Long id) throws PlayerUnknownException {

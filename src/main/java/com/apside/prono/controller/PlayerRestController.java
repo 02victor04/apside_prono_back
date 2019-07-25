@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.apside.prono.exception.InvalidPlayerDataException;
 import com.apside.prono.model.Player;
 import com.apside.prono.service.PlayerService;
 
@@ -51,9 +52,13 @@ public class PlayerRestController {
 	
 	@PostMapping(consumes = "application/json", produces="application/json", path="/api/player")
 	public ResponseEntity<Player> createPlayer(@RequestBody Player player, UriComponentsBuilder uriBuilder) {
+		if(player == null) {
+			throw new InvalidPlayerDataException();
+		}else {
 		pServ.createPlayer(player);
 		URI location = uriBuilder.path("/api/player/{id}").buildAndExpand(player.getId()).toUri();
 		return ResponseEntity.created(location).body(player);
+		}
 	}
 	
 	@PutMapping(consumes = "application/json", produces = "application/json", path = "/api/player/{id}")
