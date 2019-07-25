@@ -29,8 +29,10 @@ public class ContestService {
 	}
 	
 	@Transactional
-	public Contest updateContest(Contest contest ) {
-		return cRepo.save(contest);
+	public Contest updateContest(Contest contest, Long id ) {
+		Contest contestUpdate = cRepo.findById(id).get();
+		contestUpdate.setLabel(contest.getLabel());
+		return cRepo.save(contestUpdate);
 	}
 	
 	@Transactional

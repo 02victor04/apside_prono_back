@@ -30,8 +30,16 @@ public class EventService {
 	}
 	
 	@Transactional
-	public Event updateEvent(Event event ) {
-		return eRepo.save(event);
+	public Event updateEvent(Event event, Long id ) {
+		Event eventUpdate = eRepo.findById(id).get();
+		eventUpdate.setLabel(event.getLabel());
+		eventUpdate.setOpenDate(event.getOpenDate());
+		eventUpdate.setCloseDate(event.getCloseDate());
+		eventUpdate.setEventDate(event.getEventDate());
+		eventUpdate.setCoeff(event.getCoeff());
+		eventUpdate.setContest(event.getContest());
+		
+		return eRepo.save(eventUpdate);
 	}
 	
 	@Transactional

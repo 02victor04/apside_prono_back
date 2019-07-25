@@ -57,8 +57,8 @@ public class ContestRestController {
 	}
 	
 	@PutMapping(consumes = "application/json", produces = "application/json", path = "/api/contest/{id}")
-	public Contest modifyContest(@RequestBody Contest contest) {
-		return cServ.updateContest(contest);
+	public Contest modifyContest(@PathVariable Long id,@RequestBody Contest contest) {
+		return cServ.updateContest(contest, id);
 	}
 	
 	@DeleteMapping(path = "/api/contest/{id}")

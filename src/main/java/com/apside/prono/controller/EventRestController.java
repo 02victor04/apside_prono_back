@@ -58,8 +58,8 @@ public class EventRestController {
 	}
 	
 	@PutMapping(consumes = "application/json", produces = "application/json", path = "/api/event/{id}")
-	public Event modifyEvent(@RequestBody Event event) {
-		return eServ.updateEvent(event);
+	public Event modifyEvent(@PathVariable Long id, @RequestBody Event event) {
+		return eServ.updateEvent(event,id);
 	}
 	
 	@DeleteMapping(path = "/api/event/{id}")

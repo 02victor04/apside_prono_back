@@ -16,14 +16,14 @@ import javax.persistence.Table;
 public class Event {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 	private String label;
 	private Date eventDate;
 	private Date openDate;
 	private Date closeDate;
-	private Long coeff;
+	private double coeff;
 	@ManyToOne
 	private Contest Contest;
 	
@@ -72,10 +72,10 @@ public class Event {
 	public void setCloseDate(Date closeDate) {
 		this.closeDate = closeDate;
 	}
-	public Long getCoeff() {
+	public double getCoeff() {
 		return coeff;
 	}
-	public void setCoeff(Long coeff) {
+	public void setCoeff(double coeff) {
 		this.coeff = coeff;
 	}
 	public Contest getContest() {
