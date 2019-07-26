@@ -80,22 +80,6 @@ public class Player {
 		this.subscriptionDate = subscriptionDate;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Player [id=");
-		builder.append(id);
-		builder.append(", firstName=");
-		builder.append(firstName);
-		builder.append(", lastName=");
-		builder.append(lastName);
-		builder.append(", mail=");
-		builder.append(mail);
-		builder.append(", subscriptionDate=");
-		builder.append(subscriptionDate);
-		builder.append("]");
-		return builder.toString();
-	}
 	
 	
 	

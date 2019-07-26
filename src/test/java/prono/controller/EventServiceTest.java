@@ -23,41 +23,46 @@ import com.apside.prono.exception.PlayerUnknownException;
 import com.apside.prono.model.Contest;
 import com.apside.prono.model.Event;
 import com.apside.prono.model.Player;
-import com.apside.prono.repository.ContestRepository;
 import com.apside.prono.repository.EventRepository;
 import com.apside.prono.repository.PlayerRepository;
-import com.apside.prono.service.ContestService;
 import com.apside.prono.service.EventService;
 import com.apside.prono.service.PlayerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ContestRestTest{
+public class EventServiceTest{
 	
 	@Mock
-	private ContestRepository cRepo;
+	private EventRepository eRepo;
 	
 	@InjectMocks
-	private ContestService cServ;
+	private EventService eServ;
 
 	@Before
 	public void setup() {MockitoAnnotations.initMocks(this);}
 	
-	private Contest contestMock = new Contest(1L, "coupe du monde de bloublou");
+	private Contest contestMock = new Contest(1L, "Coupe du monde de test"); 
+	
+	private Event eventMock = new Event(1L,"france vs test",
+			new Date(2019-04-11),
+			new Date(2019-04-01),
+			new Date(2019-04-06),
+			1.12,
+			contestMock);
 	
 	@Test
-	public void CanGetAllContest() throws Exception {
-		List<Contest> lcontestMock = new ArrayList<>();
-		lcontestMock.add(contestMock);
+	public void CanGetAllEvent() throws Exception {
+		List<Event> leventMock = new ArrayList<>();
+		leventMock.add(eventMock);
 		
-		when(cRepo.findAll()).thenReturn(lcontestMock);
+		when(eRepo.findAll()).thenReturn(leventMock);
 		
-		Iterable<Contest> iContest = cServ.getAllContest();
-		List<Contest> lcontest = new ArrayList<>();
-		for (Contest contest : iContest) {
-			lcontest.add(contest);
+		Iterable<Event> iEvent = eServ.getAllEvent();
+		List<Event> levent = new ArrayList<>();
+		for (Event event : iEvent) {
+			levent.add(event);
 		}
 		
-		assertEquals("coupe du monde de bloublou", lcontest.get(0).getLabel());
+		assertEquals("france vs test", levent.get(0).getLabel());
 	}
 	
 	
@@ -65,34 +70,34 @@ public class ContestRestTest{
 	
 	
 	@Test
-	public void CanGetOneContestById() throws Exception {
-		Optional<Contest> oContest = Optional.of(contestMock);
-		when(cRepo.findById(1L)).thenReturn(oContest);
+	public void CanGetOneEventById() throws Exception {
+		Optional<Event> oEvent = Optional.of(eventMock);
+		when(eRepo.findById(1L)).thenReturn(oEvent);
 		
-		Contest contest = cServ.getContestById(contestMock.getId());
+		Event event = eServ.getEventById(eventMock.getId());
 		
-		assertEquals("coupe du monde de bloublou",contest.getLabel() );
+		assertEquals("france vs test",event.getLabel() );
 	}
 	
-//	@Test
-//	public void CanUpdateEventById() throws Exception {
-//		Optional<Event> oevent = Optional.of(eventMock);
-//		
-//		Event eventUpdate = new Event();
-//		eventUpdate.setLabel("Coupe du monde" );
-//		eventUpdate.setCoeff(1.12);
-//		eventUpdate.setId(1L);
-//		
-//		when(eRepo.findById(1L)).thenReturn(oevent);
-//		
-//		eServ.updateEvent(eventUpdate,eventUpdate.getId());
-//		Event event = eRepo.findById(eventUpdate.getId()).get();
-//
-//		assertEquals("france vs test", event.getLabel());
-//	}
+	@Test
+	public void CanUpdateEventById() throws Exception {
+		Optional<Event> oevent = Optional.of(eventMock);
+		
+		Event eventUpdate = new Event();
+		eventUpdate.setLabel("Coupe du monde" );
+		eventUpdate.setCoeff(1.12);
+		eventUpdate.setId(1L);
+		
+		when(eRepo.findById(1L)).thenReturn(oevent);
+		
+		eServ.updateEvent(eventUpdate,eventUpdate.getId());
+		
+
+		verify(eRepo, times(1)).findById(eventUpdate.getId());
+	}
 	
 	@Test
-	public void CanCreateContest() throws Exception {
+	public void CanCreateEvent() throws Exception {
 
 		Event eventCreated = new Event();
 		eventCreated.setLabel("Coupe du monde" );
@@ -149,5 +154,10 @@ public class ContestRestTest{
 		eServ.updateEvent(bddEvent,bddEvent.getId());
 	}
 	
-	
+	@Test(expected = EventUnknownException.class)
+	public void cannotDeletedEvent() throws Exception {
+		Event event = new Event();
+		event.setId(55L);
+		eServ.updateEvent(event, event.getId());
+	}
 }

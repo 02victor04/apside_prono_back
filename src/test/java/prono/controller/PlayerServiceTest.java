@@ -23,7 +23,7 @@ import com.apside.prono.repository.PlayerRepository;
 import com.apside.prono.service.PlayerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class PlayerRestTest{
+public class PlayerServiceTest{
 	
 	@Mock
 	private PlayerRepository pRepo;
@@ -66,23 +66,23 @@ public class PlayerRestTest{
 		assertEquals("test", player.getFirstName());
 	}
 	
-//	@Test
-//	public void CanUpdatePlayerById() throws Exception {
-//		
-//		Optional<Player> oplayer = Optional.of(playerMock);
-//		Player playerUpdate = new Player();
-//		playerUpdate.setFirstName("test");
-//		playerUpdate.setLastName("blibli");
-//		playerUpdate.setSubscriptionDate(new Date());
-//		
-//		when(pRepo.findById(1L)).thenReturn(oplayer);
-//		
-//		pServ.updatePlayer(playerUpdate,1L);
-//		Player player = pRepo.findById(1L).get();
-//		
-//		
-//		assertEquals("test", player.getFirstName());
-//	}
+	@Test
+	public void CanUpdatePlayerById() throws Exception {
+		
+		Optional<Player> oplayer = Optional.of(playerMock);
+		
+		Player playerUpdate = new Player();
+		playerUpdate.setId(1L);
+		playerUpdate.setFirstName("test");
+		playerUpdate.setLastName("blibli");
+		playerUpdate.setSubscriptionDate(new Date());
+		
+		when(pRepo.findById(1L)).thenReturn(oplayer);
+		
+		pServ.updatePlayer(playerUpdate,1L);
+		
+		verify(pRepo, times(1)).findById(playerUpdate.getId());
+	}
 	
 	@Test
 	public void CanCreatePlayer() throws Exception {
@@ -139,6 +139,13 @@ public class PlayerRestTest{
 		bddPlayer.setId(1L);
 		
 		pServ.updatePlayer(bddPlayer,bddPlayer.getId());
+	}
+	
+	@Test(expected = PlayerUnknownException.class)
+	public void cannotDeletedPlayer() throws Exception {
+		Player player = new Player();
+		player.setId(55L);
+		pServ.updatePlayer(player, player.getId());
 	}
 	
 }

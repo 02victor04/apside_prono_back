@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.apside.prono.exception.EventUnknownException;
 import com.apside.prono.exception.InvalidEventDataException;
+import com.apside.prono.exception.PlayerUnknownException;
 import com.apside.prono.model.Event;
 import com.apside.prono.model.Player;
 import com.apside.prono.repository.EventRepository;
@@ -52,7 +53,7 @@ public class EventService {
 	public Event updateEvent(Event event, Long id ) throws EventUnknownException {
 		Optional<Event> oevent = eRepo.findById(id);
 		if(oevent.isPresent()) {
-			Event eventUpdate = eRepo.findById(id).get();
+			Event eventUpdate = oevent.get();
 			eventUpdate.setLabel(event.getLabel());
 			eventUpdate.setOpenDate(event.getOpenDate());
 			eventUpdate.setCloseDate(event.getCloseDate());
@@ -67,9 +68,14 @@ public class EventService {
 
 	@Transactional
 	public void deleteEventById(Long id) {
-		eRepo.deleteById(id);
-	}
+		Optional<Event> oevent = eRepo.findById(id);
+		if(oevent.isPresent()) {
+			eRepo.deleteById(id);
+		}else {
+			throw new EventUnknownException(id); 
+		}
 
+	}
 }
 
 

@@ -51,7 +51,7 @@ public class PlayerService {
 	public Player updatePlayer(Player player,Long id ) throws PlayerUnknownException  {
 		Optional<Player> oplayer = pRepo.findById(id);
 		if ( oplayer.isPresent()) {
-			Player bddPlayer = pRepo.findById(id).get();
+			Player bddPlayer = oplayer.get();
 			bddPlayer.setFirstName(player.getFirstName());
 			bddPlayer.setLastName(player.getLastName());
 			bddPlayer.setMail(player.getMail());
@@ -64,7 +64,13 @@ public class PlayerService {
 
 	@Transactional
 	public void deletePlayerById(Long id) throws PlayerUnknownException {
-		pRepo.deleteById(id);
+		Optional<Player> oplayer = pRepo.findById(id);
+		if(oplayer.isPresent()) {
+			pRepo.deleteById(id);
+		}else {
+			throw new PlayerUnknownException(id); 
+		}
+		
 
 	}
 
