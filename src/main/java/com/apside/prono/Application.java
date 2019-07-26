@@ -1,5 +1,6 @@
 package com.apside.prono;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

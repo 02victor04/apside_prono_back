@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.apside.prono.exception.InvalidEventDataException;
 import com.apside.prono.model.Event;
 import com.apside.prono.service.EventService;
 
@@ -24,14 +25,14 @@ public class EventRestController {
 
 	@Autowired
 	private EventService eServ;
-	
-	
-	
+
+
+
 	public EventRestController() {
 		super();
 	}
-	
-	
+
+
 
 	public EventRestController(EventService eServ) {
 		super();
@@ -44,24 +45,32 @@ public class EventRestController {
 	public Event getById(@PathVariable Long id) {
 		return eServ.getEventById(id);
 	}
-	
+
 	@GetMapping(produces = "application/json", path="/api/allevent")
 	public Iterable<Event> getAllEvent() {
 		return eServ.getAllEvent();
 	}
-	
+
 	@PostMapping(consumes = "application/json", produces="application/json", path="/api/event")
-	public ResponseEntity<Event> create(@RequestBody Event event, UriComponentsBuilder uriBuilder) {
-		eServ.createEvent(event);
-		URI location = uriBuilder.path("/api/event/{id}").buildAndExpand(event.getId()).toUri();
-		return ResponseEntity.created(location).body(event);
+	public ResponseEntity<Event> create(@RequestBody Event event, UriComponentsBuilder uriBuilder) throws InvalidEventDataException {
+		if ( event == null ) {
+			throw new InvalidEventDataException();
+		}else {
+			eServ.createEvent(event);
+			URI location = uriBuilder.path("/api/event/{id}").buildAndExpand(event.getId()).toUri();
+			return ResponseEntity.created(location).body(event);
+		}
 	}
-	
+
 	@PutMapping(consumes = "application/json", produces = "application/json", path = "/api/event/{id}")
-	public Event modifyEvent(@PathVariable Long id, @RequestBody Event event) {
-		return eServ.updateEvent(event,id);
+	public Event modifyEvent(@PathVariable Long id, @RequestBody Event event) throws InvalidEventDataException {
+		if ( event == null ) {
+			throw new InvalidEventDataException();
+		}else {
+			return eServ.updateEvent(event,id);
+		}
 	}
-	
+
 	@DeleteMapping(path = "/api/event/{id}")
 	public void deleteEventById(@PathVariable long id) {
 		eServ.deleteEventById(id);

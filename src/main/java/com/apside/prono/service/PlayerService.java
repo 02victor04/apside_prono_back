@@ -1,5 +1,6 @@
 package com.apside.prono.service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -23,11 +24,12 @@ public class PlayerService {
 
 
 	@Transactional
-	public void createPlayer(Player player) {
+	public Player createPlayer(Player player) {
 		if((player.getFirstName() == null)||(player.getLastName() == null)||(player.getMail()== null)) {
 			throw new InvalidPlayerDataException();
 		}else {
-			pRepo.save(player);
+			player.setSubscriptionDate(new Date());
+			return pRepo.save(player);
 		}
 		
 	}
@@ -46,10 +48,10 @@ public class PlayerService {
 	}
 
 	@Transactional
-	public Player updatePlayer(Player player,Long id ) throws PlayerUnknownException {
-		Optional<Player> obddPlayer = pRepo.findById(id);
-		if(obddPlayer.isPresent()) {
-			Player bddPlayer = obddPlayer.get();
+	public Player updatePlayer(Player player,Long id ) throws PlayerUnknownException  {
+		Optional<Player> oplayer = pRepo.findById(id);
+		if ( oplayer.isPresent()) {
+			Player bddPlayer = pRepo.findById(id).get();
 			bddPlayer.setFirstName(player.getFirstName());
 			bddPlayer.setLastName(player.getLastName());
 			bddPlayer.setMail(player.getMail());
@@ -62,13 +64,10 @@ public class PlayerService {
 
 	@Transactional
 	public void deletePlayerById(Long id) throws PlayerUnknownException {
-		Optional<Player> obddPlayer = pRepo.findById(id);
-		if(obddPlayer.isPresent()) {
 		pRepo.deleteById(id);
-		}else {
-			throw new PlayerUnknownException(id);
-		}
+
 	}
+
 
 }
 

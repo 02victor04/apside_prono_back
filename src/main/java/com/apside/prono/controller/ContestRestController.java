@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.apside.prono.exception.InvalidContestDataException;
 import com.apside.prono.model.Contest;
 import com.apside.prono.service.ContestService;
 
@@ -23,14 +24,14 @@ public class ContestRestController {
 
 	@Autowired
 	private ContestService cServ;
-	
-	
+
+
 
 	public ContestRestController() {
 		super();
 	}
-	
-	
+
+
 
 	public ContestRestController(ContestService cServ) {
 		super();
@@ -43,24 +44,33 @@ public class ContestRestController {
 	public Contest getById(@PathVariable Long id) {
 		return cServ.getContestById(id);
 	}
-	
+
 	@GetMapping(produces = "application/json", path="/api/allcontest")
 	public Iterable<Contest> getAllContest() {
 		return cServ.getAllContest();
 	}
-	
+
 	@PostMapping(consumes = "application/json", produces="application/json", path="/api/contest")
-	public ResponseEntity<Contest> create(@RequestBody Contest contest, UriComponentsBuilder uriBuilder) {
-		cServ.createContest(contest);
-		URI location = uriBuilder.path("/api/contest/{id}").buildAndExpand(contest.getId()).toUri();
-		return ResponseEntity.created(location).body(contest);
+	public ResponseEntity<Contest> create(@RequestBody Contest contest, UriComponentsBuilder uriBuilder) throws InvalidContestDataException {
+		if (contest == null) {
+			throw new InvalidContestDataException();
+		}else{
+			cServ.createContest(contest);
+			URI location = uriBuilder.path("/api/contest/{id}").buildAndExpand(contest.getId()).toUri();
+			return ResponseEntity.created(location).body(contest);
+		}
+
 	}
-	
+
 	@PutMapping(consumes = "application/json", produces = "application/json", path = "/api/contest/{id}")
-	public Contest modifyContest(@PathVariable Long id,@RequestBody Contest contest) {
-		return cServ.updateContest(contest, id);
+	public Contest modifyContest(@PathVariable Long id,@RequestBody Contest contest) throws InvalidContestDataException {
+		if (contest == null) {
+			throw new InvalidContestDataException();
+		}else{
+			return cServ.updateContest(contest, id);
+		}
 	}
-	
+
 	@DeleteMapping(path = "/api/contest/{id}")
 	public void deleteContestById(@PathVariable long id) {
 		cServ.deleteContestById(id);

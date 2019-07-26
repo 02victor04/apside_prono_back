@@ -48,18 +48,6 @@ public class Contest {
 		public void setLabel(String label) {
 			this.label = label;
 		}
-
-
-		@Override
-		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append("Contest [id=");
-			builder.append(id);
-			builder.append(", label=");
-			builder.append(label);
-			builder.append("]");
-			return builder.toString();
-		}
 		
 		
 		

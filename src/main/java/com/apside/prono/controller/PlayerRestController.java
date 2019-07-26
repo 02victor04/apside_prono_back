@@ -28,9 +28,9 @@ public class PlayerRestController {
 
 	@Autowired
 	private PlayerService pServ;
-	
-	
-	
+
+
+
 	public PlayerRestController() {
 		super();
 	}
@@ -44,33 +44,37 @@ public class PlayerRestController {
 	public Player getPlayerById(@PathVariable Long id) {
 		return pServ.getPlayerById(id);
 	}
-	
+
 	@GetMapping(produces = "application/json", path="/api/allplayer")
 	public Iterable<Player> getAllPlayer() {
 		return pServ.getAllPlayer();
 	}
-	
+
 	@PostMapping(consumes = "application/json", produces="application/json", path="/api/player")
-	public ResponseEntity<Player> createPlayer(@RequestBody Player player, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<Player> createPlayer(@RequestBody Player player, UriComponentsBuilder uriBuilder) throws InvalidPlayerDataException {
 		if(player == null) {
 			throw new InvalidPlayerDataException();
 		}else {
-		pServ.createPlayer(player);
-		URI location = uriBuilder.path("/api/player/{id}").buildAndExpand(player.getId()).toUri();
-		return ResponseEntity.created(location).body(player);
+			pServ.createPlayer(player);
+			URI location = uriBuilder.path("/api/player/{id}").buildAndExpand(player.getId()).toUri();
+			return ResponseEntity.created(location).body(player);
 		}
 	}
-	
+
 	@PutMapping(consumes = "application/json", produces = "application/json", path = "/api/player/{id}")
-	public Player modifyPlayer(@PathVariable Long id ,@RequestBody Player player) {
-		return pServ.updatePlayer(player,id);
+	public Player modifyPlayer(@PathVariable Long id ,@RequestBody Player player) throws InvalidPlayerDataException {
+		if(player == null) {
+			throw new InvalidPlayerDataException();
+		}else {
+			return pServ.updatePlayer(player,id);
+		}
 	}
-	
+
 	@DeleteMapping(path = "/api/player/{id}")
 	public void deletePlayerById(@PathVariable long id) {
 		pServ.deletePlayerById(id);
 	}
-	
-	
-	
+
+
+
 }

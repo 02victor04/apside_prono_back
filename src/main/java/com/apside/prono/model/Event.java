@@ -31,7 +31,7 @@ public class Event {
 	public Event() {
 		super();
 	}
-	public Event(Long id, String label, Date eventDate, Date openDate, Date closeDate, Long coeff,
+	public Event(Long id, String label, Date eventDate, Date openDate, Date closeDate, double coeff,
 			com.apside.prono.model.Contest contest) {
 		super();
 		this.id = id;
@@ -84,26 +84,5 @@ public class Event {
 	public void setContest(Contest contest) {
 		Contest = contest;
 	}
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Event [id=");
-		builder.append(id);
-		builder.append(", label=");
-		builder.append(label);
-		builder.append(", eventDate=");
-		builder.append(eventDate);
-		builder.append(", openDate=");
-		builder.append(openDate);
-		builder.append(", closeDate=");
-		builder.append(closeDate);
-		builder.append(", coeff=");
-		builder.append(coeff);
-		builder.append(", Contest=");
-		builder.append(Contest);
-		builder.append("]");
-		return builder.toString();
-	}
-	
 	
 }
