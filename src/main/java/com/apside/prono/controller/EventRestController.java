@@ -18,7 +18,7 @@ import com.apside.prono.exception.InvalidEventDataException;
 import com.apside.prono.model.Event;
 import com.apside.prono.service.EventService;
 
-@CrossOrigin(origins = "http//localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class EventRestController {
 

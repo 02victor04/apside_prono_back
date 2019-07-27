@@ -18,7 +18,7 @@ import com.apside.prono.exception.InvalidContestDataException;
 import com.apside.prono.model.Contest;
 import com.apside.prono.service.ContestService;
 
-@CrossOrigin(origins = "http//localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class ContestRestController {
 
